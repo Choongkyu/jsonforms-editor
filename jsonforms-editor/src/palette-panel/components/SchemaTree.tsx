@@ -5,7 +5,7 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@mui/material';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 
@@ -32,12 +32,11 @@ const SchemaTreeItem: React.FC<SchemaTreeItemProps> = ({ schemaElement }) => {
 
   const [{ isDragging }, drag] = useDrag({
     item: DndItems.newUISchemaElement(uiSchemaElement, schemaElement.uuid),
-    canDrag: () => {
-      return schemaElement.schema.type !== 'object';
-    },
+    canDrag: () => schemaElement.schema.type !== 'object',
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
+    type: 'div',
   });
   const schemaElementPath = getPath(schemaElement);
   return (
@@ -47,7 +46,7 @@ const SchemaTreeItem: React.FC<SchemaTreeItemProps> = ({ schemaElement }) => {
         nodeId={schemaElementPath}
         label={getLabel(schemaElement)}
         icon={<SchemaIcon type={schemaElement.type} />}
-        isDragging={isDragging}
+        isDraggingNow={isDragging}
       >
         {getChildrenToRender(schemaElement).map((child) => (
           <SchemaTreeItem schemaElement={child} key={getPath(child)} />

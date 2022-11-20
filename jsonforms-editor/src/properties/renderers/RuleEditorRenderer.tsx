@@ -15,11 +15,9 @@ import {
   Button,
   FormHelperText,
   Grid,
-  makeStyles,
-  Theme,
   Typography,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Uri } from 'monaco-editor/esm/vs/editor/editor.api';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -70,14 +68,6 @@ const isValidRule = (rule: any) => {
   return !rule || (rule.effect && rule.condition);
 };
 
-const useStyles = makeStyles((theme: Theme) => ({
-  editorRoot: {
-    width: '100%',
-  },
-  showMore: {
-    paddingBottom: theme.spacing(2),
-  },
-}));
 const RuleEditor: React.FC<ControlProps> = (props) => {
   const { data, path, handleChange, errors } = props;
   const [invalidJson, setInvalidJson] = useState(false);
@@ -120,16 +110,19 @@ const RuleEditor: React.FC<ControlProps> = (props) => {
   }, [handleChange, model, path]);
 
   const isValid = errors.length === 0 && !invalidJson;
-  const classes = useStyles();
   return (
     <Accordion defaultExpanded={!!data}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography>Rule</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <div className={classes.editorRoot}>
+        <div
+          style={{
+            width: '100%',
+          }}
+        >
           <FormHelperText error={false}>{ruleDescription}</FormHelperText>
-          <ShowMoreLess className={classes.showMore}>
+          <ShowMoreLess>
             <FormHelperText error={false}>{ruleExample}</FormHelperText>
           </ShowMoreLess>
 

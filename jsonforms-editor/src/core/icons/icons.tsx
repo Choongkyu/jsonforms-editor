@@ -5,16 +5,16 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import { styled } from '@material-ui/core';
-import CropFreeIcon from '@material-ui/icons/CropFree';
-import Height from '@material-ui/icons/Height';
-import InsertLinkIcon from '@material-ui/icons/InsertLink';
-import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import QueueOutlinedIcon from '@material-ui/icons/QueueOutlined';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import TabIcon from '@material-ui/icons/Tab';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
+import { styled } from '@mui/material';
+import CropFreeIcon from '@mui/icons-material/CropFree';
+import Height from '@mui/icons-material/Height';
+import InsertLinkIcon from '@mui/icons-material/InsertLink';
+import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import QueueOutlinedIcon from '@mui/icons-material/QueueOutlined';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import TabIcon from '@mui/icons-material/Tab';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
 import React from 'react';
 
 import { ARRAY, OBJECT, PRIMITIVE, SchemaElementType } from '../model';

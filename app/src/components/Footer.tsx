@@ -5,16 +5,9 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import { Container, Link, makeStyles, Typography } from '@material-ui/core';
+import { Link, Typography } from '@mui/material';
 import React from 'react';
-
-const useStyles = makeStyles(() => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-}));
+import Box from '@mui/material/Box';
 
 const Copyright: React.FC = () => (
   <Typography variant='body2' color='textSecondary'>
@@ -27,10 +20,15 @@ const Copyright: React.FC = () => (
 );
 
 export const Footer: React.FC = () => {
-  const classes = useStyles();
   return (
-    <Container className={classes.container}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+      }}
+    >
       <Copyright />
-    </Container>
+    </Box>
   );
 };

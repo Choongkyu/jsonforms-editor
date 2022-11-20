@@ -17,7 +17,7 @@ import {
   ResolvedJsonFormsDispatch,
   withJsonFormsLayoutProps,
 } from '@jsonforms/react';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import React from 'react';
 import { useDrop } from 'react-dnd';
 
@@ -39,15 +39,6 @@ import {
 import { isPathError } from '../util/schemasUtil';
 import { DroppableElementRegistration } from './DroppableElement';
 
-const useLayoutStyles = makeStyles(() => ({
-  jsonformsGridItem: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
-}));
-
 interface DroppableLayoutProps {
   schema: JsonSchema;
   layout: EditorLayout;
@@ -65,7 +56,6 @@ export const DroppableLayout: React.FC<DroppableLayoutProps> = ({
   renderers,
   cells,
 }) => {
-  const classes = useLayoutStyles();
   return (
     <Grid
       container
@@ -79,7 +69,12 @@ export const DroppableLayout: React.FC<DroppableLayoutProps> = ({
           <Grid
             item
             key={`${path}-${index}`}
-            className={classes.jsonformsGridItem}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+            }}
             xs
           >
             <ResolvedJsonFormsDispatch
@@ -108,20 +103,6 @@ interface DropPointProps {
   index: number;
 }
 
-const useDropPointStyles = makeStyles((theme) => ({
-  dropPointGridItem: (props: { isOver: boolean; fillWidth: boolean }) => ({
-    padding: theme.spacing(1),
-    backgroundImage: props.isOver
-      ? 'radial-gradient(#c8c8c8 1px, transparent 1px)'
-      : 'none',
-    backgroundSize: 'calc(10 * 1px) calc(10 * 1px)',
-    backgroundClip: 'content-box',
-    minWidth: '2em',
-    minHeight: props.isOver ? '8em' : '2em',
-    maxWidth: props.fillWidth || props.isOver ? 'inherit' : '2em',
-  }),
-}));
-
 const DropPoint: React.FC<DropPointProps> = ({ layout, index }) => {
   const dispatch = useDispatch();
   const rootSchema = useSchema();
@@ -142,15 +123,13 @@ const DropPoint: React.FC<DropPointProps> = ({ layout, index }) => {
             index
           );
       }
-      // fallback
-      return false;
     },
     collect: (mon) => ({
       isOver: !!mon.isOver() && mon.canDrop(),
       uiSchemaElement: mon.getItem()?.uiSchemaElement,
-      schemaUUID: mon.getItem()?.schemaUUID,
+      schemaUUID: (mon.getItem() as NewUISchemaElement)?.schemaUUID,
     }),
-    drop: (item) => {
+    drop: (item: NewUISchemaElement | MoveUISchemaElement) => {
       switch (item.type) {
         case NEW_UI_SCHEMA_ELEMENT:
           schemaUUID
@@ -187,13 +166,22 @@ const DropPoint: React.FC<DropPointProps> = ({ layout, index }) => {
   const fillWidth =
     layout.type !== 'HorizontalLayout' || layout.elements.length === 0;
 
-  const classes = useDropPointStyles({ isOver, fillWidth });
   return (
     <Grid
       item
       container
       ref={drop}
-      className={classes.dropPointGridItem}
+      sx={{
+        padding: (theme) => theme.spacing(1),
+        backgroundImage: isOver
+          ? 'radial-gradient(#c8c8c8 1px, transparent 1px)'
+          : 'none',
+        backgroundSize: 'calc(10 * 1px) calc(10 * 1px)',
+        backgroundClip: 'content-box',
+        minWidth: '2em',
+        minHeight: isOver ? '8em' : '2em',
+        maxWidth: fillWidth || isOver ? 'inherit' : '2em',
+      }}
       data-cy={`${getDataPath(layout)}-drop-${index}`}
       xs
     ></Grid>

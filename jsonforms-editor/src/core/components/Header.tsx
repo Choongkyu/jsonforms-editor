@@ -5,27 +5,17 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import CloudDownload from '@material-ui/icons/CloudDownload';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 
 import { useExportSchema, useExportUiSchema } from '../util/hooks';
 import { ExportDialog } from './ExportDialog';
-
-const useStyles = makeStyles(() =>
-  createStyles({
-    title: {
-      flexGrow: 1,
-    },
-  })
-);
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 export const Header: React.FC = () => {
-  const classes = useStyles();
   const schema = useExportSchema();
   const uiSchema = useExportUiSchema();
   const [open, setOpen] = useState(false);
@@ -39,7 +29,9 @@ export const Header: React.FC = () => {
           variant='h6'
           color='inherit'
           noWrap
-          className={classes.title}
+          sx={{
+            flexGrow: 1,
+          }}
         >
           JSON Forms Editor
         </Typography>
@@ -48,7 +40,7 @@ export const Header: React.FC = () => {
           onClick={openDownloadDialog}
           color='inherit'
         >
-          <CloudDownload />
+          <CloudDownloadIcon />
         </IconButton>
       </Toolbar>
       {open && (

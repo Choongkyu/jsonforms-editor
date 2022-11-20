@@ -15,7 +15,7 @@ import {
   JsonFormsDispatch,
   withJsonFormsArrayControlProps,
 } from '@jsonforms/react';
-import { makeStyles, Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import React, { useMemo } from 'react';
 import { useDrop } from 'react-dnd';
 
@@ -25,22 +25,11 @@ import {
   MOVE_UI_SCHEMA_ELEMENT,
   NEW_UI_SCHEMA_ELEMENT,
   NewUISchemaElement,
+  MoveUISchemaElement,
 } from '../dnd';
 import { Actions } from '../model';
 import { containsControls, EditorControl } from '../model/uischema';
 import { DroppableElementRegistration } from './DroppableElement';
-
-interface StyleProps {
-  isOver: boolean;
-}
-
-const useStyles = makeStyles({
-  root: ({ isOver }: StyleProps) => ({
-    padding: 10,
-    fontSize: isOver ? '1.1em' : '1em',
-    border: isOver ? '1px solid #D3D3D3' : 'none',
-  }),
-});
 
 interface DroppableArrayControlProps extends ArrayControlProps {
   uischema: EditorControl;
@@ -56,7 +45,7 @@ const DroppableArrayControl: React.FC<DroppableArrayControlProps> = ({
   const rootSchema = useSchema();
   const [{ isOver, uiSchemaElement }, drop] = useDrop({
     accept: [NEW_UI_SCHEMA_ELEMENT, MOVE_UI_SCHEMA_ELEMENT],
-    canDrop: (item): boolean => {
+    canDrop: (item: NewUISchemaElement | MoveUISchemaElement): boolean => {
       switch (item.type) {
         case NEW_UI_SCHEMA_ELEMENT:
           return canDropIntoScope(
@@ -68,12 +57,10 @@ const DroppableArrayControl: React.FC<DroppableArrayControlProps> = ({
           // move as a new detail is only allowed when there are no controls
           return !containsControls(uiSchemaElement);
       }
-      // fallback
-      return false;
     },
     collect: (mon) => ({
       isOver: !!mon.isOver() && mon.canDrop(),
-      uiSchemaElement: mon.getItem()?.uiSchemaElement,
+      uiSchemaElement: mon.getItem<NewUISchemaElement>()?.uiSchemaElement,
     }),
     drop: (item): void => {
       switch (item.type) {
@@ -88,7 +75,6 @@ const DroppableArrayControl: React.FC<DroppableArrayControlProps> = ({
       }
     },
   });
-  const classes = useStyles({ isOver });
 
   // DroppableControl removed itself before dispatching to us, we need
   // to re-add it for our children
@@ -98,7 +84,14 @@ const DroppableArrayControl: React.FC<DroppableArrayControlProps> = ({
 
   if (!uischema.options?.detail) {
     return (
-      <Typography ref={drop} className={classes.root}>
+      <Typography
+        ref={drop}
+        sx={{
+          padding: 10,
+          fontSize: isOver ? '1.1em' : '1em',
+          border: isOver ? '1px solid #D3D3D3' : 'none',
+        }}
+      >
         Default array layout. Drag and drop an item here to customize array
         layout.
       </Typography>

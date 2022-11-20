@@ -9,10 +9,9 @@ import './JsonFormsEditor.css';
 import 'react-reflex/styles.css';
 
 import { JsonFormsRendererRegistryEntry } from '@jsonforms/core';
-import { makeStyles } from '@material-ui/core';
 import React, { ComponentType, useEffect, useReducer, useState } from 'react';
 import { DndProvider } from 'react-dnd';
-import Backend from 'react-dnd-html5-backend';
+import { HTML5Backend as Backend } from 'react-dnd-html5-backend';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
 
 import {
@@ -47,23 +46,7 @@ import {
   PropertySchemasDecorator,
   PropertySchemasProvider,
 } from './properties/propertiesService';
-
-const useStyles = makeStyles((theme) => ({
-  pane: {
-    minHeight: '200px',
-    margin: theme.spacing(0, 1, 0, 1),
-    height: '100%',
-  },
-  leftPane: {},
-  centerPane: {
-    alignItems: 'stretch',
-  },
-  rightPane: {},
-  reflexContainer: {
-    flex: '1',
-    alignItems: 'stretch',
-  },
-}));
+import { styled } from '@mui/system';
 
 interface JsonFormsEditorProps {
   schemaService?: SchemaService;
@@ -165,6 +148,11 @@ export const JsonFormsEditor: React.FC<JsonFormsEditorProps> = ({
     </EditorContextInstance.Provider>
   );
 };
+const Div = styled('div')(({ theme }) => ({
+  minHeight: '200px',
+  margin: theme.spacing(0, 1, 0, 1),
+  height: '100%',
+}));
 
 interface JsonFormsEditorUiProps {
   editorTabs?: EditorTab[];
@@ -182,32 +170,34 @@ const JsonFormsEditorUi: React.FC<JsonFormsEditorUiProps> = ({
   footer,
   paletteTabs,
 }) => {
-  const classes = useStyles();
   return (
     <Layout HeaderComponent={header} FooterComponent={footer}>
       <ReflexContainer
         orientation='vertical'
-        className={classes.reflexContainer}
+        style={{
+          flex: '1',
+          alignItems: 'stretch',
+        }}
       >
         <ReflexElement minSize={200} flex={1}>
-          <div className={`${classes.pane} ${classes.leftPane}`}>
+          <Div>
             <PalettePanel paletteTabs={paletteTabs} />
-          </div>
+          </Div>
         </ReflexElement>
         <ReflexSplitter propagate />
         <ReflexElement minSize={200} flex={2}>
-          <div className={`${classes.pane} ${classes.centerPane}`}>
+          <Div sx={{ alignItems: 'stretch' }}>
             <EditorPanel
               editorTabs={editorTabs}
               editorRenderers={editorRenderers}
             />
-          </div>
+          </Div>
         </ReflexElement>
         <ReflexSplitter propagate />
         <ReflexElement minSize={200} flex={1}>
-          <div className={`${classes.pane} ${classes.rightPane}`}>
+          <Div>
             <PropertiesPanel propertyRenderers={propertyRenderers} />
-          </div>
+          </Div>
         </ReflexElement>
       </ReflexContainer>
     </Layout>

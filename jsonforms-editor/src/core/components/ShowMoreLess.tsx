@@ -5,19 +5,19 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import { Button, Collapse } from '@material-ui/core';
+import { Button, Collapse } from '@mui/material';
+import { styled } from '@mui/system';
 import React, { useState } from 'react';
 export interface ShowMoreLessProps {
-  className?: string;
+  children: React.ReactNode;
 }
 
-export const ShowMoreLess: React.FC<ShowMoreLessProps> = ({
-  className,
-  children,
-}) => {
+const Div = styled('div')(({ theme }) => ({ paddingBottom: theme.spacing(2) }));
+
+export const ShowMoreLess: React.FC<ShowMoreLessProps> = ({ children }) => {
   const [showMore, setShowMore] = useState(false);
   return (
-    <div className={className}>
+    <Div>
       <Collapse in={showMore}>{children}</Collapse>
       <Button
         size='small'
@@ -27,6 +27,6 @@ export const ShowMoreLess: React.FC<ShowMoreLessProps> = ({
       >
         {showMore ? 'Show Less' : 'Show More'}
       </Button>
-    </div>
+    </Div>
   );
 };

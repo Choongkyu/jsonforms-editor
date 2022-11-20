@@ -6,8 +6,8 @@
  * ---------------------------------------------------------------------
  */
 
-import { Grid, IconButton, makeStyles, Typography } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Grid, IconButton, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 
@@ -23,43 +23,10 @@ import {
 } from '../../core/model/uischema';
 import { isEditorControl, tryFindByUUID } from '../../core/util/schemasUtil';
 
-const useEditorElementStyles = makeStyles((theme) => ({
-  editorElement: {
-    border: '1px solid #d3d3d3',
-    padding: theme.spacing(1),
-    opacity: 1,
-    backgroundColor: '#fafafa',
-    width: '100%',
-    alignSelf: 'baseline',
-    minWidth: 'fit-content',
-  },
-  elementDragging: {
-    opacity: 0.5,
-  },
-  elementSelected: {
-    border: '1px solid #a9a9a9',
-    backgroundColor: 'rgba(63, 81, 181, 0.08)',
-  },
-  elementHeader: {
-    '&:hover $elementControls': {
-      opacity: 1,
-    },
-  },
-  elementControls: {
-    opacity: 0,
-  },
-  rule: {
-    fontWeight: 'bolder',
-    color: theme.palette.text.primary,
-    marginRight: theme.spacing(0.5),
-    marginLeft: theme.spacing(1),
-  },
-  ruleEffect: { fontStyle: 'italic', color: theme.palette.text.secondary },
-}));
-
 export interface EditorElementProps {
   wrappedElement: EditorUISchemaElement;
   elementIcon?: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export const EditorElement: React.FC<EditorElementProps> = ({
@@ -77,12 +44,12 @@ export const EditorElement: React.FC<EditorElementProps> = ({
     wrappedElement.linkedSchemaElement
   );
   const [{ isDragging }, drag] = useDrag({
+    type: 'moveUISchemaElement',
     item: DndItems.moveUISchemaElement(wrappedElement, elementSchema),
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   });
-  const classes = useEditorElementStyles();
 
   const uiPath = getUISchemaPath(wrappedElement);
   const isSelected = selection?.uuid === wrappedElement.uuid;
@@ -99,9 +66,15 @@ export const EditorElement: React.FC<EditorElementProps> = ({
     <Grid
       item
       data-cy={`editorElement-${uiPath}`}
-      className={`${classes.editorElement} ${
-        isDragging ? classes.elementDragging : ''
-      } ${isSelected ? classes.elementSelected : ''}`}
+      sx={{
+        border: isSelected ? '1px solid #a9a9a9' : '1px solid #d3d3d3',
+        padding: (theme) => theme.spacing(1),
+        opacity: isDragging ? 0.5 : 1,
+        backgroundColor: isSelected ? 'rgba(63, 81, 181, 0.08)' : '#fafafa',
+        width: '100%',
+        alignSelf: 'baseline',
+        minWidth: 'fit-content',
+      }}
       ref={drag}
       onClick={(event) => {
         event.stopPropagation();
@@ -114,7 +87,11 @@ export const EditorElement: React.FC<EditorElementProps> = ({
         container
         direction='row'
         wrap='nowrap'
-        className={classes.elementHeader}
+        sx={{
+          '&:hover $elementControls': {
+            opacity: 1,
+          },
+        }}
         data-cy={`editorElement-${uiPath}-header`}
       >
         <Grid item container alignItems='center' xs>
@@ -128,12 +105,23 @@ export const EditorElement: React.FC<EditorElementProps> = ({
               wrap='nowrap'
               xs
             >
-              <Typography variant='subtitle2' className={classes.rule}>
+              <Typography
+                variant='subtitle2'
+                sx={{
+                  fontWeight: 'bolder',
+                  color: (theme) => theme.palette.text.primary,
+                  marginRight: (theme) => theme.spacing(0.5),
+                  marginLeft: (theme) => theme.spacing(1),
+                }}
+              >
                 {'R'}
               </Typography>
               <Typography
                 variant='caption'
-                className={classes.ruleEffect}
+                sx={{
+                  fontStyle: 'italic',
+                  color: (theme) => theme.palette.text.secondary,
+                }}
               >{`(${ruleEffect})`}</Typography>
             </Grid>
           ) : null}
@@ -146,7 +134,13 @@ export const EditorElement: React.FC<EditorElementProps> = ({
               wrap='nowrap'
               xs
             >
-              <Typography variant='caption' className={classes.ruleEffect}>
+              <Typography
+                variant='caption'
+                sx={{
+                  fontStyle: 'italic',
+                  color: (theme) => theme.palette.text.secondary,
+                }}
+              >
                 {wrappedElement.scope}
               </Typography>
             </Grid>
@@ -155,8 +149,10 @@ export const EditorElement: React.FC<EditorElementProps> = ({
         <Grid
           item
           container
-          className={classes.elementControls}
-          justify='flex-end'
+          sx={{
+            opacity: 0,
+          }}
+          justifyContent='flex-end'
           alignItems='center'
           xs
         >

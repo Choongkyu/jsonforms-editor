@@ -5,20 +5,15 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import {
-  FormControlLabel,
-  IconButton,
-  Switch,
-  Toolbar,
-} from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import { FormControlLabel, IconButton, Switch, Toolbar } from '@mui/material';
 import React, { useState } from 'react';
 
 import { ErrorDialog } from '../../core/components/ErrorDialog';
 import { copyToClipBoard } from '../../core/util/clipboard';
 import { env } from '../../env';
 import { JsonEditorDialog, TextType } from '../../text-editor';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface UpdateOk {
   success: true;

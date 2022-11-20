@@ -91,7 +91,8 @@ export const buildEditorUiSchemaTree = (
 export const buildUiSchema = (
   uiSchema: EditorUISchemaElement
 ): UISchemaElement => {
-  const clone: EditorUISchemaElement = cloneDeep(uiSchema);
+  const clone: Omit<EditorUISchemaElement, 'uuid'> & { uuid?: string } =
+    cloneDeep(uiSchema);
   traverse(clone, (current) => {
     delete current.parent;
     delete current.linkedSchemaElement;

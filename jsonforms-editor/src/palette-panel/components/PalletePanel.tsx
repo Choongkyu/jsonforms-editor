@@ -5,7 +5,8 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import { makeStyles, Tab, Tabs } from '@material-ui/core';
+import { Tab, Tabs } from '@mui/material';
+import { styled } from '@mui/system';
 import React, { useState } from 'react';
 
 import { TabContent } from '../../core/components';
@@ -16,16 +17,11 @@ import { SchemaTreeView } from './SchemaTree';
 import { UIElementsTree } from './UIElementsTree';
 import { UISchemaPanel } from './UISchemaPanel';
 
-const useStyles = makeStyles((theme) => ({
-  uiElementsTree: {
-    marginBottom: theme.spacing(1),
-  },
-  palettePanel: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-}));
+const Top = styled('div')({
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+});
 
 export interface PaletteTab {
   name: string;
@@ -51,9 +47,8 @@ export const PalettePanel: React.FC<PalettePanelProps> = ({ paletteTabs }) => {
   };
   const schema: SchemaElement | undefined = useSchema();
   const paletteService = usePaletteService();
-  const classes = useStyles();
   return (
-    <div className={classes.palettePanel}>
+    <Top>
       <Tabs value={selectedTab} onChange={handleTabChange} variant='scrollable'>
         <Tab label='Palette' data-cy='palette-tab' />
         {paletteTabs
@@ -67,10 +62,7 @@ export const PalettePanel: React.FC<PalettePanelProps> = ({ paletteTabs }) => {
           : null}
       </Tabs>
       <TabContent index={0} currentIndex={selectedTab}>
-        <UIElementsTree
-          className={classes.uiElementsTree}
-          elements={paletteService.getPaletteElements()}
-        />
+        <UIElementsTree elements={paletteService.getPaletteElements()} />
         <SchemaTreeView schema={schema} />
       </TabContent>
       {paletteTabs
@@ -84,6 +76,6 @@ export const PalettePanel: React.FC<PalettePanelProps> = ({ paletteTabs }) => {
             </TabContent>
           ))
         : null}
-    </div>
+    </Top>
   );
 };

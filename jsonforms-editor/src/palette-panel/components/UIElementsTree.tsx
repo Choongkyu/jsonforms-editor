@@ -5,7 +5,8 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@mui/material';
+import { styled } from '@mui/system';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 
@@ -32,6 +33,7 @@ const UiSchemaTreeItem: React.FC<UiSchemaTreeItemProps> = ({
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
+    type: 'div',
   });
   return (
     <div ref={drag} data-cy={`${type}-source`}>
@@ -40,23 +42,21 @@ const UiSchemaTreeItem: React.FC<UiSchemaTreeItemProps> = ({
         nodeId={type}
         label={label}
         icon={icon}
-        isDragging={isDragging}
+        isDraggingNow={isDragging}
       ></StyledTreeItem>
     </div>
   );
 };
 
 interface UIElementsTreeProps {
-  className?: string;
   elements: PaletteElement[];
 }
 
-export const UIElementsTree: React.FC<UIElementsTreeProps> = ({
-  className,
-  elements,
-}) => {
+const Div = styled('div')(({ theme }) => ({ marginBottom: theme.spacing(1) }));
+
+export const UIElementsTree: React.FC<UIElementsTreeProps> = ({ elements }) => {
   return (
-    <div className={className}>
+    <Div>
       <Typography variant='h6' color='inherit' noWrap>
         Layouts & Other
       </Typography>
@@ -71,6 +71,6 @@ export const UIElementsTree: React.FC<UIElementsTreeProps> = ({
           />
         ))}
       </StyledTreeView>
-    </div>
+    </Div>
   );
 };

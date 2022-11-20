@@ -5,15 +5,15 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import { DialogContent, Fade, Typography } from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import IconButton from '@material-ui/core/IconButton';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Toolbar from '@material-ui/core/Toolbar';
-import { TransitionProps } from '@material-ui/core/transitions';
-import CloseIcon from '@material-ui/icons/Close';
+
+import Dialog from '@mui/material/Dialog';
+import AppBar from '@mui/material/AppBar';
+import Button from '@mui/material/Button';
+import Fade from '@mui/material/Fade';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import { TransitionProps } from '@mui/material/transitions';
+import CloseIcon from '@mui/icons-material/Close';
 import { Uri } from 'monaco-editor/esm/vs/editor/editor.api';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import React, { useCallback, useMemo } from 'react';
@@ -25,35 +25,12 @@ import {
   getMonacoModelForUri,
   TextType,
 } from '../jsonSchemaValidation';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    appBar: {
-      position: 'relative',
-    },
-    toolbar: {
-      display: 'flex',
-      justifyContent: 'space-between',
-    },
-    title: {
-      marginLeft: theme.spacing(2),
-      flex: 1,
-    },
-    dialogPaper: {
-      height: '100%', // 'MonacoEditor' uses height to grow
-      minHeight: '95vh',
-      maxHeight: '95vh',
-    },
-    dialogContent: {
-      overflow: 'hidden',
-      marginTop: theme.spacing(2),
-      flex: 1,
-    },
-  })
-);
+import { DialogContent, Typography } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & { children?: React.ReactElement },
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
   ref: React.Ref<unknown>
 ) {
   return <Fade ref={ref} {...props} />;
@@ -76,8 +53,6 @@ export const JsonEditorDialog: React.FC<JsonEditorDialogProps> = ({
   onApply,
   onCancel,
 }) => {
-  const classes = useStyles();
-
   const modelUri = Uri.parse('json://core/specification/schema.json');
 
   const configureEditor = useCallback(
@@ -108,12 +83,23 @@ export const JsonEditorDialog: React.FC<JsonEditorDialogProps> = ({
       open={open}
       onClose={onCancel}
       TransitionComponent={Transition}
-      classes={{ paper: classes.dialogPaper }}
+      sx={{
+        paper: {
+          height: '100%', // 'MonacoEditor' uses height to grow
+          minHeight: '95vh',
+          maxHeight: '95vh',
+        },
+      }}
       maxWidth='lg'
       fullWidth
     >
-      <AppBar className={classes.appBar}>
-        <Toolbar className={classes.toolbar}>
+      <AppBar sx={{ position: 'relative' }}>
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
           <IconButton
             edge='start'
             color='inherit'
@@ -135,7 +121,13 @@ export const JsonEditorDialog: React.FC<JsonEditorDialogProps> = ({
           </Button>
         </Toolbar>
       </AppBar>
-      <DialogContent className={classes.dialogContent}>
+      <DialogContent
+        sx={{
+          overflow: 'hidden',
+          marginTop: (theme) => theme.spacing(2),
+          flex: 1,
+        }}
+      >
         <MonacoEditor
           language='json'
           editorDidMount={(editor) => {

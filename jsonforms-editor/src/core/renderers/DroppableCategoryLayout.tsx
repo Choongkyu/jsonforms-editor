@@ -7,7 +7,7 @@
  */
 import { Category, LayoutProps, rankWith, uiTypeIs } from '@jsonforms/core';
 import { withJsonFormsLayoutProps } from '@jsonforms/react';
-import { Card, CardContent } from '@material-ui/core';
+import { Card, CardContent } from '@mui/material';
 import React from 'react';
 
 import { EditorLayout } from '../model/uischema';

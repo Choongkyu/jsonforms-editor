@@ -5,34 +5,18 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Hidden from '@material-ui/core/Hidden';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
-import Cancel from '@material-ui/icons/Cancel';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Hidden from '@mui/material/Hidden';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import CancelIcon from '@mui/icons-material/Cancel';
 import React, { useState } from 'react';
 
 import { FormattedJson } from './Formatted';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    button: {
-      margin: theme.spacing(1),
-    },
-    title: {
-      textAlign: 'center',
-    },
-    content: {
-      maxHeight: '90vh',
-      height: '90vh',
-    },
-  })
-);
 
 export interface ExportDialogProps {
   open: boolean;
@@ -46,7 +30,6 @@ export const ExportDialog = ({
   schema,
   uiSchema,
 }: ExportDialogProps) => {
-  const classes = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
   const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setSelectedTab(newValue);
@@ -61,10 +44,20 @@ export const ExportDialog = ({
       maxWidth='md'
       fullWidth
     >
-      <DialogTitle className={classes.title} id='export-dialog-title'>
+      <DialogTitle
+        sx={{
+          textAlign: 'center',
+        }}
+        id='export-dialog-title'
+      >
         {'Export'}
       </DialogTitle>
-      <DialogContent className={classes.content}>
+      <DialogContent
+        sx={{
+          maxHeight: '90vh',
+          height: '90vh',
+        }}
+      >
         <Tabs value={selectedTab} onChange={handleTabChange}>
           <Tab label='Schema' />
           <Tab label='UI Schema' />
@@ -80,9 +73,11 @@ export const ExportDialog = ({
         <Button
           aria-label={'Close'}
           variant='contained'
+          sx={{
+            margin: (theme) => theme.spacing(1),
+          }}
           color='primary'
-          className={classes.button}
-          startIcon={<Cancel />}
+          startIcon={<CancelIcon />}
           onClick={onClose}
         >
           Close

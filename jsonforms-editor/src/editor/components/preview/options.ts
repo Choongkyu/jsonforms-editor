@@ -5,5 +5,5 @@
  * https://github.com/eclipsesource/jsonforms-editor/blob/master/LICENSE
  * ---------------------------------------------------------------------
  */
-import AJV from 'ajv';
-export const previewOptions: AJV.Options = { useDefaults: true };
+import { Options } from 'ajv';
+export const previewOptions: Options = { useDefaults: true };

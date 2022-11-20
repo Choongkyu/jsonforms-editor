@@ -52,7 +52,7 @@ export const Properties: React.FC<PropertiesProps> = ({
   );
 
   const updateProperties = useCallback(
-    ({ data: updatedProperties }) => {
+    ({ data: updatedProperties }: { data: { [key: string]: any } }) => {
       if (uiElement && !isEqual(data, updatedProperties)) {
         dispatch(
           Actions.updateUISchemaElement(uiElement.uuid, updatedProperties)

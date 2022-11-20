@@ -7,38 +7,15 @@
  */
 import { GroupLayout, LayoutProps, rankWith, uiTypeIs } from '@jsonforms/core';
 import { withJsonFormsLayoutProps } from '@jsonforms/react';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
 import React from 'react';
 
 import { EditorLayout } from '../model/uischema';
 import { DroppableLayout } from './DroppableLayout';
 
-const useStyles = makeStyles((theme) => ({
-  groupLabel: {
-    padding: theme.spacing(2),
-    alignItems: 'baseline',
-  },
-  labelPlaceholder: {
-    fontStyle: 'italic',
-    fontWeight: 'lighter',
-    color: '#9e9e9e',
-  },
-  groupLabelInput: {
-    fontSize: theme.typography.h6.fontSize,
-  },
-}));
-
 const Group: React.FC<LayoutProps> = (props) => {
   const { uischema } = props;
   const groupLayout = uischema as GroupLayout & EditorLayout;
-  const classes = useStyles();
   return (
     <Card>
       <CardHeader
@@ -47,16 +24,25 @@ const Group: React.FC<LayoutProps> = (props) => {
             container
             direction='row'
             spacing={1}
-            className={classes.groupLabel}
+            sx={{
+              padding: (theme) => theme.spacing(2),
+              alignItems: 'baseline',
+            }}
           >
             <Grid item>
               <Typography>Label:</Typography>
             </Grid>
             <Grid item>
               <Typography
-                className={`${
-                  groupLayout.label ? '' : classes.labelPlaceholder
-                }`}
+                sx={
+                  groupLayout.label
+                    ? {
+                        fontStyle: 'italic',
+                        fontWeight: 'lighter',
+                        color: '#9e9e9e',
+                      }
+                    : null
+                }
                 variant='h6'
               >
                 {groupLayout.label ?? 'no label'}

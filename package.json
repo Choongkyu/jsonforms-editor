@@ -1,18 +1,25 @@
 {
-  "name": "root",
+  "name": "jsonforms-editor",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "lerna": "lerna",
-    "init": "lerna bootstrap --hoist",
-    "build": "lerna run build",
-    "test": "lerna run test",
-    "lint": "lerna run lint",
-    "start": "cd app && npm run start",
-    "watch": "cd jsonforms-editor && npm run watch",
-    "cypress:open": "cd app && npm run cypress:open",
-    "cypress:ci": "cd app && npm run cypress:ci"
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "jest-environment-jsdom-fourteen": "^1.0.1",
-    "lerna": "^4.0.0"
-  }
+    "eslint-config-custom": "*",
+    "prettier": "latest",
+    "turbo": "latest"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {},
+  "packageManager": "npm@8.19.2"
 }
